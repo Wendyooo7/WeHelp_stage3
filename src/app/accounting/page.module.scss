@@ -1,0 +1,19 @@
+.main {
+  padding: 2% 0;
+}
+
+#form {
+  display: flex;
+  justify-content: center;
+  padding: 2%;
+  height: 85px;
+}
+
+.form__item {
+  margin: 0 0.25%;
+  padding: 0.25%;
+}
+
+#form__amount {
+  width: 1px;
+}
