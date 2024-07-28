@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .main {
   padding: 2% 0;
 }
@@ -12,8 +13,62 @@
 .form__item {
   margin: 0 0.25%;
   padding: 0.25%;
+  font-size: 16px;
 }
 
-#form__amount {
-  width: 1px;
+#form__total {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#main__bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2%;
+}
+#main__bottom .main__buttom__item {
+  margin: 1%;
+}
+
+.list__accountRecord {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2%;
+}
+.list__accountRecord .list__row {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 450px;
+}
+.list__accountRecord .list__row .list__amount {
+  width: 15%;
+  text-align: left;
+}
+.list__accountRecord .list__row .list__detail {
+  margin-left: 10px;
+  text-align: left;
+  width: 30%;
+}
+.list__accountRecord .list__row .list__deleteBtn {
+  margin-left: 180px;
+  padding: 3px 5px;
+  white-space: nowrap;
+}
+
+#link {
+  border: 2px solid black;
+  font-size: 20px;
+  padding: 0.5% 1%;
+  border-radius: 5px;
+  display: inline-block; /* 適合按鈕的行內塊 */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* 右下方陰影 */
+  transition: box-shadow 0.3s ease;
+}
+#link:hover {
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
 }/*# sourceMappingURL=page.module.css.map */
