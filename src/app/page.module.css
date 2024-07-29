@@ -17,6 +17,7 @@
   display: inline-block; /* 適合按鈕的行內塊 */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* 右下方陰影 */
   transition: box-shadow 0.3s ease; /* 添加過渡效果 */
+  white-space: nowrap;
 }
 .link:hover {
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3); /* 增強陰影效果 */

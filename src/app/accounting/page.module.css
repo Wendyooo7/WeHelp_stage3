@@ -7,7 +7,6 @@
   display: flex;
   justify-content: center;
   padding: 2%;
-  height: 85px;
 }
 
 .form__item {
@@ -56,7 +55,7 @@
 }
 .list__accountRecord .list__row .list__deleteBtn {
   margin-left: 180px;
-  padding: 3px 5px;
+  padding: 5px 10px;
   white-space: nowrap;
 }
 
@@ -71,4 +70,13 @@
 }
 #link:hover {
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 360px) and (max-width: 450px) {
+  .form__item {
+    width: 100%;
+  }
+  .list__accountRecord .list__row .list__deleteBtn {
+    margin-left: 70px;
+  }
 }/*# sourceMappingURL=page.module.css.map */
