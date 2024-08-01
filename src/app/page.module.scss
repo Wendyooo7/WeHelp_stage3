@@ -40,18 +40,23 @@
 
 .input {
   height: 30px;
-  padding: 1%;
+  padding: 0.25% 0.5%;
   border-radius: 5px;
   border: 1.5px solid black;
 }
 
 .btn {
   padding: 5px 10px;
-  cursor: pointer;
   border-radius: 5px;
   border: 1.5px solid black;
+  cursor: pointer;
 }
 
+.signedIn {
+  text-align: center;
+}
+
+// 以下為 Next.js 內建，有空想研究故先不刪掉
 .description {
   display: inherit;
   justify-content: inherit;
