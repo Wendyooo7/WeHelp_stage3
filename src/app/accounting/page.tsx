@@ -1,7 +1,10 @@
 "use client";
 import styles from "./page.module.scss";
 import Link from "next/link";
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { auth } from "@/app/firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
 
 // 定義 Form 組件的 props 類型
 interface FormProps {
@@ -39,6 +42,20 @@ export default function Home() {
     }[]
   >([]);
   // 上行useState([])沒定義型別的話，下面(currentAccountRecord) => { 會報錯
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        router.push("/");
+      }
+    });
+
+    // 清理
+    return () => unsubscribe();
+  }, []);
+
   const amount = parseFloat(newInput) * (category === "收入" ? 1 : -1); // 根據類別設置正負金額
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

@@ -3,6 +3,7 @@
 // import Image from "next/image";
 import styles from "./page.module.scss";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { useState, Dispatch, SetStateAction, useEffect } from "react";
 import {
@@ -33,6 +34,7 @@ function SignInForm() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -79,7 +81,14 @@ function SignInForm() {
     return (
       <div className={styles.signedIn}>
         <p>您已經使用 {userEmail} 登入</p>
-        <button className={styles.btn}>立刻開始</button>
+        <button
+          className={styles.btn}
+          onClick={() => {
+            router.push("/accounting");
+          }}
+        >
+          立刻開始
+        </button>
         <button onClick={handleSignOut} className={styles.btn}>
           登出
         </button>
