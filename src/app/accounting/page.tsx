@@ -95,7 +95,7 @@ export default function Home() {
     event.preventDefault();
 
     if (!Number.isInteger(Number(newInput))) {
-      alert("請輸入數字");
+      alert("金額欄位請輸入數字");
       return;
     }
 
