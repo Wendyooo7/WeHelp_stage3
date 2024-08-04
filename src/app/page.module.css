@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8rem;
+  padding: 4rem;
   min-height: 100vh;
 }
 
@@ -33,7 +33,7 @@
   text-align: center;
   line-height: 1.5em;
   width: 100%;
-  margin: 2% 0;
+  margin: 1% 0;
 }
 
 .input {
@@ -48,6 +48,11 @@
   border-radius: 5px;
   border: 1.5px solid black;
   cursor: pointer;
+  margin: 10px 5px;
+}
+
+.signedIn {
+  text-align: center;
 }
 
 .description {

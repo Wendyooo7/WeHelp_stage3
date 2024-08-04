@@ -3,8 +3,15 @@ import styles from "./page.module.scss";
 import Link from "next/link";
 import { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { auth } from "@/app/firebase/config";
+import { auth, db } from "@/app/firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
+import {
+  doc,
+  setDoc,
+  collection,
+  getDocs,
+  deleteDoc,
+} from "firebase/firestore";
 
 // 定義 Form 組件的 props 類型
 interface FormProps {
@@ -46,9 +53,35 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (!user) {
         router.push("/");
+      } else {
+        const userId = user.uid;
+        try {
+          const recordsSnapshot = await getDocs(
+            collection(db, "users", userId, "records")
+          );
+          const recordsData = recordsSnapshot.docs.map((doc) => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              title: data.title,
+              detail: data.detail,
+              category: data.category,
+              amount: data.amount,
+            } as {
+              id: string;
+              title: string;
+              detail: string;
+              category: string;
+              amount: number;
+            };
+          });
+          setAccountRecord(recordsData);
+        } catch (error) {
+          console.error("載入紀錄時發生錯誤：", error);
+        }
       }
     });
 
@@ -58,19 +91,46 @@ export default function Home() {
 
   const amount = parseFloat(newInput) * (category === "收入" ? 1 : -1); // 根據類別設置正負金額
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (!Number.isInteger(Number(newInput))) {
+      alert("請輸入數字");
+      return;
+    }
+
+    const user = auth.currentUser;
+    if (!user) {
+      console.error("使用者未登入");
+      return;
+    }
+
+    const userId = user.uid;
+    const newRecord = {
+      id: crypto.randomUUID(),
+      title: newInput,
+      detail: newDetail,
+      category,
+      amount,
+    };
 
     setAccountRecord((currentAccountRecord) => [
       ...currentAccountRecord,
-      {
-        id: crypto.randomUUID(),
+      newRecord,
+    ]);
+
+    try {
+      await setDoc(doc(db, "users", userId, "records", newRecord.id), {
         title: newInput,
         detail: newDetail,
-        category,
-        amount,
-      },
-    ]);
+        category: category,
+        amount: amount,
+      });
+      console.log("紀錄已儲存到 Firestore");
+    } catch (error) {
+      console.error("儲存到 Firestore 時發生錯誤：", error);
+    }
+
     setNewInput("");
     setNewDetail("");
   }
@@ -81,10 +141,24 @@ export default function Home() {
     0
   );
 
-  function deleteAccountRecord(id: string) {
-    setAccountRecord((currentAccountRecord) => {
-      return currentAccountRecord.filter((record) => record.id !== id);
-    });
+  async function deleteAccountRecord(id: string) {
+    const user = auth.currentUser;
+    if (!user) {
+      console.error("使用者未登入");
+      return;
+    }
+    const userId = user.uid;
+
+    try {
+      await deleteDoc(doc(db, "users", userId, "records", id));
+      console.log("紀錄已從 Firestore 刪除");
+
+      setAccountRecord((currentAccountRecord) => {
+        return currentAccountRecord.filter((record) => record.id !== id);
+      });
+    } catch (error) {
+      console.error("從 Firestore 刪除紀錄時發生錯誤：", error);
+    }
   }
 
   return (
@@ -134,7 +208,6 @@ function Form({
         value={category}
         onChange={(e) => setCategory(e.target.value)}
         name="form__select"
-        id=""
         className={styles.form__item}
       >
         <option value="收入">收入</option>
@@ -142,14 +215,13 @@ function Form({
       </select>
       <input
         className={styles.form__item}
-        placeholder="請輸入金額"
-        size={9}
+        placeholder="請輸入整數金額"
+        size={12}
         required
         value={newInput}
         onChange={(e) => setNewInput(e.target.value)}
       />
       <input
-        id="form__detail"
         className={styles.form__item}
         placeholder="請輸入明細"
         required

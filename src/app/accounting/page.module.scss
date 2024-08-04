@@ -42,7 +42,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 450px;
+    max-width: 500px;
 
     .list__amount {
       width: 15%;
@@ -50,13 +50,13 @@
     }
 
     .list__detail {
-      margin-left: 10px;
-      text-align: left;
-      width: 30%;
+      margin-left: 20px;
+      text-align: center;
+      width: 80%;
     }
 
     .list__deleteBtn {
-      margin-left: 180px;
+      margin-left: 150px;
       padding: 5px 10px;
       white-space: nowrap; // 不換行
     }
